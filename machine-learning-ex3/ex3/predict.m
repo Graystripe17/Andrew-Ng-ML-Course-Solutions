@@ -20,8 +20,17 @@ p = zeros(size(X, 1), 1);
 %       information see 'help max'. If your examples are in rows, then, you
 %       can use max(A, [], 2) to obtain the max for each row.
 %
+padding1s_X = ones(size(X, 1), 1);
+X = [padding1s_X, X];
 
+a_2 = sigmoid(Theta1 * X');
 
+padding1s_a_2 = ones(size(a_2, 2), 1)';
+a_2 = [padding1s_a_2; a_2];
+% Append ones to sigmoid(Theta1 * X') to represent the bias term
+a_3 = sigmoid(Theta2 * a_2);
+u = zeros(size(X, 1));
+[u, p] = max(a_3);
 
 
 
