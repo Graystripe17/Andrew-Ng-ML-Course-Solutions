@@ -73,16 +73,17 @@ a_2 = [bias2, a_2];
 output = sigmoid(Theta2 * a_2');
 
 % y_encoded = reshape(y(:), 5000, 11)
-y_encoded = zeros(10, size(y, 1));
+% Normally size of output is 10
+y_encoded = zeros(size(output, 1), size(y, 1));
 for i = 1:size(y, 1)
     y_encoded(y(i), i) = 1;
 endfor
 costs_matrix = (1 / m) * (-y_encoded .* log(output) - (1 - y_encoded) .* log(1 - output));
 J = sum(sum(costs_matrix));
 
-
-
-
+regularized = (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
+keyboard
+J = J + regularized;
 
 % -------------------------------------------------------------
 
