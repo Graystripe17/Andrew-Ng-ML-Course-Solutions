@@ -82,7 +82,6 @@ costs_matrix = (1 / m) * (-y_encoded .* log(output) - (1 - y_encoded) .* log(1 -
 J = sum(sum(costs_matrix));
 
 regularized = (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
-keyboard
 J = J + regularized;
 
 % -------------------------------------------------------------
