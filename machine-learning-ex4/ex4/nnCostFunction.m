@@ -62,15 +62,18 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-bias1 = ones(size(X, 1), 1);
-X = [bias1, X];
-a_2 = sigmoid(Theta1 * X')'; % htheta1 is now 5000x25
+a_1 = X
+bias_1 = ones(size(a_1, 1), 1);
+a_1 = [bias_1, a_1]; % a_1 is X
+z_2 = Theta1 * a_1';
+a_2 = sigmoid(z_2)'; % htheta1 is now 5000x25
 
-% pad htheta1
-bias2 = ones(size(a_2, 1), 1);
-a_2 = [bias2, a_2];
+bias_2 = ones(size(a_2, 1), 1);
+a_2 = [bias_2, a_2];
+z_3 = Theta2 * a_2';
+a_3 = sigmoid(z_3); % output layer
 
-output = sigmoid(Theta2 * a_2');
+output = a_3
 
 % y_encoded = reshape(y(:), 5000, 11)
 % Normally size of output is 10
@@ -85,6 +88,13 @@ regularized = (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Th
 J = J + regularized;
 
 % -------------------------------------------------------------
+function ans = sigmoid_prime(z)
+    ans = sigmoid(z) .* (1 - sigmoid(z))
+end
+% -------------------------------------------------------------
+keyboard
+delta_3 = output - y_encoded
+delta_2 = Theta2' * delta_3 .* sigmoid_prime(0.5)
 
 % =========================================================================
 
