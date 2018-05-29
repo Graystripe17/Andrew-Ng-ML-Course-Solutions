@@ -62,7 +62,7 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-a_1 = X
+a_1 = X;
 bias_1 = ones(size(a_1, 1), 1);
 a_1 = [bias_1, a_1]; % a_1 is X
 z_2 = Theta1 * a_1';
@@ -73,7 +73,7 @@ a_2 = [bias_2, a_2];
 z_3 = Theta2 * a_2';
 a_3 = sigmoid(z_3); % output layer
 
-output = a_3
+output = a_3;
 
 % y_encoded = reshape(y(:), 5000, 11)
 % Normally size of output is 10 but in this case there's 4
@@ -88,18 +88,13 @@ regularized = (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Th
 J = J + regularized;
 
 % -------------------------------------------------------------
-function ans = sigmoid_prime(z)
-    ans = sigmoid(z) .* (1 - sigmoid(z))
-end
-% -------------------------------------------------------------
-for t = 1:m % m = 16
-delta_3 = (output - y_encoded)(:, t); % (4x1)
-keyboard;
+% Vectorized method
+delta_3 = (output - y_encoded); % (4x1)
 % Theta2' (5x4); delta_3 (4x1); z_2 (4x16)
-delta_2 = Theta2(:, 2:end)' * delta_3 .* sigmoid_prime(z_2(:, t));
-Theta2_grad = Theta2_grad + delta_3 * a_2(t, 2:end);
-Theta1_grad = Theta1_grad + delta_2 * a_1(t, 2:end);
-end
+delta_2 = Theta2(:, 2:end)' * delta_3 .* sigmoidGradient(z_2); % Inefficient, save a_2
+% delta_2 = Theta2(:, 2:end)' * delta_3 .* (a_2 .* (1 - a_2))(t, 2:end);
+Theta2_grad = Theta2_grad + delta_3 * a_2;
+Theta1_grad = Theta1_grad + delta_2 * a_1;
 
 Theta1_grad = Theta1_grad ./ m;
 Theta2_grad = Theta2_grad ./ m;
