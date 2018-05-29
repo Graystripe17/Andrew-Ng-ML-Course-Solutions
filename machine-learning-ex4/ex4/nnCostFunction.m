@@ -76,7 +76,7 @@ a_3 = sigmoid(z_3); % output layer
 output = a_3
 
 % y_encoded = reshape(y(:), 5000, 11)
-% Normally size of output is 10
+% Normally size of output is 10 but in this case there's 4
 y_encoded = zeros(size(output, 1), size(y, 1));
 for i = 1:size(y, 1)
     y_encoded(y(i), i) = 1;
@@ -92,10 +92,17 @@ function ans = sigmoid_prime(z)
     ans = sigmoid(z) .* (1 - sigmoid(z))
 end
 % -------------------------------------------------------------
-keyboard
-delta_3 = output - y_encoded
-delta_2 = Theta2' * delta_3 .* sigmoid_prime(0.5)
+for t = 1:m % m = 16
+delta_3 = (output - y_encoded)(:, t); % (4x1)
+keyboard;
+% Theta2' (5x4); delta_3 (4x1); z_2 (4x16)
+delta_2 = Theta2(:, 2:end)' * delta_3 .* sigmoid_prime(z_2(:, t));
+Theta2_grad = Theta2_grad + delta_3 * a_2(t, 2:end);
+Theta1_grad = Theta1_grad + delta_2 * a_1(t, 2:end);
+end
 
+Theta1_grad = Theta1_grad ./ m;
+Theta2_grad = Theta2_grad ./ m;
 % =========================================================================
 
 % Unroll gradients
