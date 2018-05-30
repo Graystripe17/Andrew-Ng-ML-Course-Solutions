@@ -96,8 +96,8 @@ delta_2 = Theta2(:, 2:end)' * delta_3 .* sigmoidGradient(z_2); % Inefficient, sa
 Theta2_grad = Theta2_grad + delta_3 * a_2;
 Theta1_grad = Theta1_grad + delta_2 * a_1;
 
+Theta2_grad = Theta2_grad ./ m + lambda / m .* Theta2;
 Theta1_grad = Theta1_grad ./ m;
-Theta2_grad = Theta2_grad ./ m;
 % =========================================================================
 
 % Unroll gradients
