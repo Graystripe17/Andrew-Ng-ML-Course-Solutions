@@ -20,9 +20,9 @@ grad = zeros(size(theta));
 %
 hTheta = X * theta;
 cost_matrix = (1 / (2 * m)) * (hTheta - y) .^ 2;
-regularized_term = lambda / (2 * m) * theta(2:end) .^ 2;
-J = sum(sum(cost_matrix)) + sum(sum(regularized_term));
-grad = X' * (hTheta - y) ./ m;
+theta(1) = 0;
+J = sum(sum(cost_matrix)) + sum(sum(lambda / (2 * m) * theta .^ 2));
+grad = X' * (hTheta - y) ./ m + lambda / m * theta;
 
 
 
@@ -31,3 +31,20 @@ grad = X' * (hTheta - y) ./ m;
 grad = grad(:);
 
 end
+
+%!test
+%! X = [[1 1 1]' magic(3)];
+%! y = [7 6 5]';
+%! theta = [0.1 0.2 0.3 0.4]';
+%! lambda = 0
+%! [J0 g0] = linearRegCostFunction(X, y, theta, lambda);
+%! [J7 g7] = linearRegCostFunction(X, y, theta, 7);
+%! Jexpected_lambda0 = 1.3533;
+%! Gexpected_lambda0 = [-1.4000; -8.7333; -4.3333; -7.9333;];
+%! Jexpected_lambda7 = 1.6917;
+%! Gexpected_lambda7 = [-1.4000; -8.2667; -3.6333; -7.0000;];
+%! assert(J0, Jexpected_lambda0, .0001);
+%! assert(g0, Gexpected_lambda0, .0001);
+%! assert(J7, Jexpected_lambda7, .0001);
+%! assert(g7, Gexpected_lambda7, .0001);
+
