@@ -22,6 +22,7 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 vals = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+#{
 error = intmax('int32');
 for C_index = 1:numel(vals)
     for sigma_index = 1:numel(vals)
@@ -38,11 +39,9 @@ for C_index = 1:numel(vals)
         end
     end
 end
-
-
-
-
-
+#}
+C = 1;
+sigma = 0.1;
 
 
 
