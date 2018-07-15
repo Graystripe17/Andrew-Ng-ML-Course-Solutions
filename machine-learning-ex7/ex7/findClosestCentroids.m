@@ -20,8 +20,16 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
+for i = 1:size(X, 1)
+    point = X(i, :);
+    closest_j = 1;
+    for j = 1:size(centroids, 1)
+        if (norm(point - centroids(j, :)) < norm(point - centroids(closest_j, :)))
+            closest_j = j;
+        end
+    end
+    idx(i) = closest_j;
+end
 
 
 
