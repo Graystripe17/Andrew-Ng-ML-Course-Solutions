@@ -42,10 +42,12 @@ Theta_grad = zeros(size(Theta));
 hypothesis = Theta * X';
 Theta_reg = lambda / 2 * (sum(sum(Theta(:, 2:end) .^ 2)));
 X_reg = lambda / 2 * (sum(sum(X(:, 2:end) .^ 2)));
+Theta_reg = lambda / 2 * (sum(sum(Theta .^ 2)));
+X_reg = lambda / 2 * (sum(sum(X .^ 2)));
 J = 0.5 * sum(sum(((hypothesis' - Y) .* R) .^ 2)) + Theta_reg + X_reg;
 
-X_grad = ((Theta * X')' - Y) .* R * Theta;
-Theta_grad = (((Theta * X')' - Y) .* R)' * X;
+X_grad = ((Theta * X')' - Y) .* R * Theta + lambda * X;
+Theta_grad = (((Theta * X')' - Y) .* R)' * X + lambda * Theta;
 % =============================================================
 
 grad = [X_grad(:); Theta_grad(:)];
